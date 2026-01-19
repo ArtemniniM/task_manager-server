@@ -1,7 +1,8 @@
 const express = require("express");
-const router = express.Router();
-
 const { getData, getDataById, updateById, deleteById, patchById } = require("../servicies/user.service.js");
+const { checkUserId, checkUserBody } = require("../helper/middleware.js");
+
+const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", checkUserId, async (req, res) => {
   try {
     const { id } = req.params;
     res.status(200).send(await getDataById(id));
@@ -20,7 +21,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", checkUserId, checkUserBody, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, surname, email, pwd } = req.body;
@@ -30,7 +31,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", checkUserId, async (req, res) => {
   try {
     const { id } = req.params;
     res.status(200).send(await deleteById(id));
@@ -39,7 +40,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", checkUserId, checkUserId, async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;

@@ -1,6 +1,4 @@
 const express = require("express");
-const router = express.Router();
-
 const {
   addTask,
   getAllTask,
@@ -9,6 +7,9 @@ const {
   deleteByIdTask,
   patchByIdTask,
 } = require("../servicies/task.service");
+const { checkTaskId, checkTaskBody } = require("../helper/middleware");
+
+const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
@@ -18,7 +19,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", checkTaskId, async (req, res) => {
   try {
     const { id } = req.params;
     res.status(200).send(await getByIdTask(id));
@@ -27,7 +28,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", checkTaskBody, async (req, res) => {
   try {
     const { task, user_id } = req.body;
     res.status(200).send(await addTask(task, user_id));
@@ -36,7 +37,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", checkTaskId, checkTaskBody, async (req, res) => {
   try {
     const { id } = req.params;
     const { task, user_id } = req.body;
@@ -46,7 +47,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", checkTaskId, async (req, res) => {
   try {
     const { id } = req.params;
     res.status(200).send(await deleteByIdTask(id));
@@ -55,7 +56,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", checkTaskId, checkTaskBody, async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;

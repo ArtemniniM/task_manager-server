@@ -1,9 +1,10 @@
 const express = require("express");
+const { addElements, authUser } = require("../servicies/api.service");
+const { checkUserBody } = require("../helper/middleware");
+
 const router = express.Router();
 
-const { addElements, authUser } = require("../servicies/api.service");
-
-router.post("/reg", async (req, res) => {
+router.post("/reg", checkUserBody, async (req, res) => {
   try {
     const { name, surname, email, pwd } = req.body;
     res.status(200).send(await addElements(name, surname, email, pwd));
