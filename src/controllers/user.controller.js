@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { getData, getDataById, updateById, deleteById } = require("../servicies/user.service.js");
+const { getData, getDataById, updateById, deleteById, patchById } = require("../servicies/user.service.js");
 
 router.get("/", async (req, res) => {
   try {
@@ -34,6 +34,16 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     res.status(200).send(await deleteById(id));
+  } catch (e) {
+    res.status(404).send(e.message);
+  }
+});
+
+router.patch("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    res.status(200).send(await patchById(id, data));
   } catch (e) {
     res.status(404).send(e.message);
   }

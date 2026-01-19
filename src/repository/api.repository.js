@@ -2,7 +2,7 @@ const pool = require("./db.js");
 
 async function addElementsDB(name, surname, email, pwd) {
   const connection = await pool.connect();
-  const sql = "INSERT INTO users (name, surname, email, pwd) VALUES ($1,$2,$3,$4) returning *";
+  const sql = "INSERT INTO users (name, surname, email, pwd) VALUES ($1,$2,$3,$4) RETURNING *";
   const result = await connection.query(sql, [name, surname, email, pwd]);
   return result.rows;
 }
