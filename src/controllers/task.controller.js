@@ -1,17 +1,10 @@
-const express = require("express");
-const {
-  addTask,
-  getAllTask,
-  getByIdTask,
-  updateByIdTask,
-  deleteByIdTask,
-  patchByIdTask,
-} = require("../servicies/task.service");
-const { checkTaskId, checkTaskBody } = require("../helper/middleware");
+const express = require('express');
+const { addTask, getAllTask, getByIdTask, updateByIdTask, deleteByIdTask, patchByIdTask } = require('../servicies/task.service');
+const { checkTaskId, checkTaskBody } = require('../helper/middleware');
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     res.status(200).send(await getAllTask());
   } catch (e) {
@@ -19,7 +12,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", checkTaskId, async (req, res) => {
+router.get('/:id', checkTaskId, async (req, res) => {
   try {
     const { id } = req.params;
     res.status(200).send(await getByIdTask(id));
@@ -28,7 +21,7 @@ router.get("/:id", checkTaskId, async (req, res) => {
   }
 });
 
-router.post("/", checkTaskBody, async (req, res) => {
+router.post('/', checkTaskBody, async (req, res) => {
   try {
     const { task, user_id } = req.body;
     res.status(200).send(await addTask(task, user_id));
@@ -37,7 +30,7 @@ router.post("/", checkTaskBody, async (req, res) => {
   }
 });
 
-router.put("/:id", checkTaskId, checkTaskBody, async (req, res) => {
+router.put('/:id', checkTaskId, checkTaskBody, async (req, res) => {
   try {
     const { id } = req.params;
     const { task, user_id } = req.body;
@@ -47,7 +40,7 @@ router.put("/:id", checkTaskId, checkTaskBody, async (req, res) => {
   }
 });
 
-router.delete("/:id", checkTaskId, async (req, res) => {
+router.delete('/:id', checkTaskId, async (req, res) => {
   try {
     const { id } = req.params;
     res.status(200).send(await deleteByIdTask(id));
@@ -56,7 +49,7 @@ router.delete("/:id", checkTaskId, async (req, res) => {
   }
 });
 
-router.patch("/:id", checkTaskId, checkTaskBody, async (req, res) => {
+router.patch('/:id', checkTaskId, checkTaskBody, async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
